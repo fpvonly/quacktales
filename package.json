@@ -1,0 +1,48 @@
+{
+  "name": "quacktales",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "core-js": "^2.6.0",
+    "express": "^4.16.4",
+    "node-nocache": "^1.0.5",
+    "prop-types": "^15.6.2",
+    "react": "^16.6.3",
+    "react-addons-css-transition-group": "^15.6.2",
+    "react-dom": "^16.6.3",
+    "react-numeric-input": "^2.2.3",
+    "react-router-dom": "^4.3.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "cross-env": "^5.2.0",
+    "forever": "^0.15.3",
+    "git-revision-webpack-plugin": "^2.5.1",
+    "nodemon": "^1.18.9",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --mode development",
+    "devbackend": "cross-env NODE_ENV=development nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fpvonly/quacktales.git"
+  },
+  "author": "Ari Petäjäjärvi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fpvonly/quacktales/issues"
+  },
+  "homepage": "https://github.com/fpvonly/quacktales#readme"
+}
