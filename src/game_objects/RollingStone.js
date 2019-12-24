@@ -1,4 +1,4 @@
-import './phaser/phaser.min.js';
+import '../phaser/phaser.min.js';
 import GameSprite from './GameSprite.js';
 
 export default class RollingStone extends GameSprite {

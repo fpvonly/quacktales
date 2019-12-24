@@ -7,7 +7,7 @@ var APP_DIR  = path.resolve(__dirname, '');
 
 var config = {
   entry: [
-    APP_DIR + '/src/app.jsx'
+    APP_DIR + '/src/Game.js'
   ],
   output: {
     path: BUILD_DIR,

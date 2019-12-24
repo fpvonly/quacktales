@@ -1,4 +1,4 @@
-import './phaser/phaser.min.js';
+import '../../phaser/phaser.min.js';
 
 export default class TitleScene extends Phaser.Scene {
 
@@ -16,7 +16,6 @@ export default class TitleScene extends Phaser.Scene {
     let guideText = this.add.text(400, 400, '', { fontSize: '20px', fill: '#FFF' });
     guideText.setText('             Controls:\n\n Arrow-keys = move, jump, duck, climb\n Space-key = pogo jump, hit objects');
     guideText.setOrigin(0.5, 0);
-
 
     this.gameThemeAudio = this.sound.add('ducktalesTheme');
     this.gameThemeAudio.setVolume(0.3);

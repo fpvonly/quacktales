@@ -1,7 +1,7 @@
 {
   "name": "quacktales",
   "version": "1.0.0",
-  "description": "",
+  "description": "QuackTales Phaser 3 platformer game",
   "main": "index.js",
   "dependencies": {
     "core-js": "^2.6.0",
@@ -31,16 +31,17 @@
     "webpack-dev-server": "^3.1.10"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --mode development",
-    "devbackend": "cross-env NODE_ENV=development nodemon server.js"
+    "prodbuild": "webpack --mode production",
+    "prodbackend": "forever start --append server.js",
+    "foreverrestart": "forever restart server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fpvonly/quacktales.git"
   },
   "author": "Ari Petäjäjärvi",
-  "license": "ISC",
+  "license": "",
   "bugs": {
     "url": "https://github.com/fpvonly/quacktales/issues"
   },

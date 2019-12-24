@@ -1,13 +1,13 @@
-import './phaser/phaser.min.js';
+import '../../phaser/phaser.min.js';
 import HealthBarScene from './HealthBarScene.js';
-import Player from './Player.js';
-import Enemy from './Enemy.js';
-import RoundRock from './RoundRock.js';
-import Pompeli from './Pompeli.js';
-import TreasureChest  from  './TreasureChest.js';
-import FallingStone from './FallingStone.js';
-import RollingStone from './RollingStone.js';
-import GameSprite from './GameSprite.js';
+import Player from '../Player.js';
+import Enemy from '../Enemy.js';
+import RoundRock from '../RoundRock.js';
+import Pompeli from '../Pompeli.js';
+import TreasureChest  from  '../TreasureChest.js';
+import FallingStone from '../FallingStone.js';
+import RollingStone from '../RollingStone.js';
+import GameSprite from '../GameSprite.js';
 
 export default class SceneAmazon extends Phaser.Scene {
 
@@ -20,7 +20,7 @@ export default class SceneAmazon extends Phaser.Scene {
         arcade: {
           gravity: { y : 300 },
           tileBias: 5,
-          debug: true
+          debug: false
         }
       }
 
@@ -85,6 +85,7 @@ export default class SceneAmazon extends Phaser.Scene {
   preload () {}
 
   create () {
+    this.restartInit = false; // prevent events causing multiple restarts at once
 
     this.HealthBarScene = this.scene.get('HealthBarScene');
     if (typeof this.HealthBarScene === 'undefined' || this.HealthBarScene === null) {
@@ -378,47 +379,6 @@ export default class SceneAmazon extends Phaser.Scene {
     this.o2 = this.physics.add.overlap(this.player, this.bossFightTriggerPoint, this.activateBossFightTriggerInterval);
     this.collideWithBoss = this.physics.add.overlap(this.player, this.BOSS, this.killEnemy);
 
-
-
-
-//console.log(this.cam);
-  //  this.text = this.add.text(this.cam.worldView.x, this.cam.worldView.y, 'score: 0', { fontSize: '32px', fill: '#000', fontFamily: 'Arial'  })
-  //  this.text.setText('Score: ');
-
-    //  this.platforms = this.physics.add.staticGroup();
-  //    this.platforms.create(400, 568, 'ground').setScale(6).refreshBody();
-  //    this.platforms.create(600, 400, 'ground');
-  //    this.platforms.create(50, 250, 'ground');
-  //    this.platforms.create(750, 220, 'ground');
-
-    //  for (let child of this.objects) {
-      /*  let enemy = this.enemies.create(1100,500, 'hitbox');
-        enemy.body.immovable = true;
-        enemy.body.moves = false;
-        enemy.body.allowGravity = false;
-        enemy.setSize(child.width*child._scaleX, child.height*child._scaleY);
-        this.enemy.add(enemy, true);*/
-  //    }
-  /*
-      // stars
-
-      this.stars = this.physics.add.group({
-        key: 'star',
-        repeat: 11,
-        setXY: {x: 12, y: 0, stepX: 70}
-      });
-
-      this.stars.children.iterate(function(child) {
-        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-      });
-
-      //this.physics.add.collider(this.stars, this.platforms);
-      this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
-
-      // score
-
-      this.scoretText = this.add.text(16, 16, 'score:0', {fontSize: '32px', fill: '#000000'});
-  */
   }
 
   update (time, delta) {
@@ -657,23 +617,6 @@ export default class SceneAmazon extends Phaser.Scene {
     this.player.registerLian(lian);
   }
 
-  collectStar = (player, star) => {
-    star.disableBody(true, true);
-
-    this.score += 10;
-    this.scoretText.setText('Score: ' + this.score);
-
-    if (this.stars.countActive(true) === 0) {
-      this.stars.children.iterate(function(child) {
-        child.enableBody(true, child.x, 0, true, true)
-      });
-
-      let x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-      bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-    }
-  }
-
   destroyRock = (rock, walls) => {
     if (rock.moving === true) {
       rock.disable();
@@ -805,26 +748,29 @@ export default class SceneAmazon extends Phaser.Scene {
       if (o.clearTimeouts) {
         o.clearTimeouts();
       }
-    });    
+    });
 
     this.BOSS.clearTimeouts();
     this.player.destroy();
 
-    this.sound.remove(this.levelThemeAudio);
-    this.sound.remove(this.gameOverAudio);
-    this.sound.remove(this.gameWinAudio);
-    this.sound.remove(this.bossBattleAudio);
-    this.sound.remove(this.pogoAudio);
-    this.sound.remove(this.hitFailAudio);
-    this.sound.remove(this.killAudio);
-    this.sound.remove(this.touchDownAudio);
-    this.sound.remove(this.hitOkAudio);
-    this.sound.remove(this.climbAudio);
-    this.sound.remove(this.collectAudio);
+    this.sound.removeByKey('amazonTheme');
+    this.sound.removeByKey('gameOverSound');
+    this.sound.removeByKey('stageComplete');
+    this.sound.removeByKey('bossBattle');
+    this.sound.removeByKey('pogo');
+    this.sound.removeByKey('hitFail');
+    this.sound.removeByKey('killEnemy');
+    this.sound.removeByKey('touchDown');
+    this.sound.removeByKey('hitOk');
+    this.sound.removeByKey('climb');
+    this.sound.removeByKey('collect');
 
     this.registry.destroy();
     this.events.off();
-    this.scene.start('RestartAmazon');
+    if(this.restartInit === false){
+      this.restartInit = true;
+      this.scene.start('RestartAmazon');
+    }
   }
 
   gameOverAndReset = (win = false) => {

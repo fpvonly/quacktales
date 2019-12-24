@@ -1,4 +1,4 @@
-import './phaser/phaser.min.js';
+import '../../phaser/phaser.min.js';
 
 export default class Preload extends Phaser.Scene {
 
@@ -12,12 +12,12 @@ export default class Preload extends Phaser.Scene {
   }
 
   preload () {
-    this.load.audio('ducktalesTheme', 'assets/audio/ducktales_theme.ogg');
-    this.load.audio('amazonTheme', 'assets/audio/amazon_theme.ogg');
-    this.load.audio('gameOverSound', 'assets/audio/game_over.ogg');
-    this.load.audio('deadSound', 'assets/audio/game_over.ogg');
-    this.load.audio('bossBattle', 'assets/audio/boss_battle.ogg');
-    this.load.audio('stageComplete', 'assets/audio/stage_complete.ogg');
+    this.load.audio('ducktalesTheme', 'assets/audio/ducktales_theme.mp3');
+    this.load.audio('amazonTheme', 'assets/audio/amazon_theme.mp3');
+    this.load.audio('gameOverSound', 'assets/audio/game_over.mp3');
+    this.load.audio('deadSound', 'assets/audio/game_over.mp3');
+    this.load.audio('bossBattle', 'assets/audio/boss_battle.mp3');
+    this.load.audio('stageComplete', 'assets/audio/stage_complete.mp3');
     this.load.audio('pogo', 'assets/audio/pogo.wav');
     this.load.audio('hitFail', 'assets/audio/hit_fail.wav');
     this.load.audio('killEnemy', 'assets/audio/kill_enemy.wav');

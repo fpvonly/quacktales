@@ -1,4 +1,4 @@
-import './phaser/phaser.min.js';
+import '../phaser/phaser.min.js';
 import GameSprite from './GameSprite.js';
 import Diamond from './Diamond.js';
 
@@ -43,7 +43,7 @@ export default class TreasureChest extends GameSprite {
     this.diamond.activate();
     this.once('animationcomplete', () => {
       this.setActive(false);
-      this.setVisible(false);          
+      this.setVisible(false);
     });
   }
 

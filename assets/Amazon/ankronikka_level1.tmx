@@ -277,7 +277,7 @@
  <objectgroup id="21" name="Enemy spawn points">
   <object id="53" name="plant_upsidedown_spawn" gid="91" x="2096" y="1296" width="16" height="16" visible="0"/>
   <object id="55" name="plant_spawn" gid="91" x="2016" y="1408" width="16" height="16" visible="0"/>
-  <object id="56" name="ape_spawn" gid="91" x="1920" y="1216" width="16" height="16" visible="0"/>
+  <object id="56" name="ape_spawn" gid="91" x="1920" y="1152" width="16" height="16" visible="0"/>
   <object id="57" name="ape_spawn" gid="91" x="512" y="1168" width="16" height="16" visible="0"/>
   <object id="58" name="snake_spawn" gid="92" x="992" y="1312" width="16" height="16" visible="0"/>
   <object id="59" name="bee_spawn" gid="91" x="791.5" y="1305" width="16" height="16" visible="0"/>

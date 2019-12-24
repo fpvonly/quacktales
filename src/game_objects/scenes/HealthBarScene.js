@@ -1,4 +1,4 @@
-import './phaser/phaser.min.js';
+import '../../phaser/phaser.min.js';
 
 export default class HealthBarScene extends Phaser.Scene {
 

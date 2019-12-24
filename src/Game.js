@@ -1,8 +1,8 @@
 import './phaser/phaser.min.js';
-import PreloadScene from './Preload.js';
-import TitleScene from './titleScene.js';
-import RestartAmazon from './RestartAmazon.js';
-import SceneAmazon from './SceneAmazon.js';
+import PreloadScene from './game_objects/scenes/PreloadScene.js';
+import TitleScene from './game_objects/scenes/TitleScene.js';
+import RestartAmazon from './game_objects/scenes/RestartAmazon.js';
+import SceneAmazon from './game_objects/scenes/SceneAmazon.js';
 
 var config = {
   type: Phaser.CANVAS,
