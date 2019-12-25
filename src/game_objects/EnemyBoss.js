@@ -1,4 +1,5 @@
 import '../phaser/phaser.min.js';
+import {playerInRange} from './funcs.js';
 import GameSprite from './GameSprite.js';
 
 export default class EnemyBoss extends GameSprite {
@@ -54,7 +55,7 @@ export default class EnemyBoss extends GameSprite {
   }
 
   checkFallDownTrigger = (player) => {
-    if (this.active === true && this.playerInRange() === true) {
+    if (this.active === true && this.playerInRange(this, this.scene.getPlayer()) === true) {
       this.fall(player);
     }
   }
@@ -108,17 +109,6 @@ export default class EnemyBoss extends GameSprite {
       }, 1000);
     }
     this.shaking = true;
-  }
-
-  playerInRange = () => {
-    let playerLeftX = this.scene.getPlayer().body.x - this.scene.getPlayer().body.width/2;
-    let playerRightX = this.scene.getPlayer().body.x + this.scene.getPlayer().body.width/2;
-    let stoneLeftX = this.x - this.width/2;
-    let stoneRightX = this.x + this.width/2;
-    if ((playerRightX >= stoneLeftX && playerRightX <= stoneRightX) || (playerLeftX <= stoneRightX && playerLeftX >= stoneLeftX)) {
-      return true;
-    }
-    return false;
   }
 
   clearTimeouts = () => {

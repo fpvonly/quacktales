@@ -405,17 +405,13 @@ export default class SceneAmazon extends Phaser.Scene {
       });
     }
 
-    if (this.getCameraLevel() === 1) {
-      this.beeEnemies.children.iterate((enemy) => {
-        enemy.move();
-      });
-    }
+    this.beeEnemies.children.iterate((enemy) => {
+      enemy.move();
+    });
 
-    if (this.getCameraLevel() === 4) {
-      this.ghostEnemies.children.iterate((enemy) => {
-        enemy.move();
-      });
-    }
+    this.ghostEnemies.children.iterate((enemy) => {
+      enemy.move();
+    });
 
     if (this.getCameraLevel() === 5) {
       this.ceilingStones.children.iterate((stone) => {

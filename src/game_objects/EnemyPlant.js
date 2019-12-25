@@ -1,4 +1,5 @@
 import GameSprite from './GameSprite.js';
+import {playerInRange} from './funcs.js';
 
 export default class EnemyPlant extends GameSprite {
 
@@ -63,22 +64,11 @@ export default class EnemyPlant extends GameSprite {
       this.attackPosY = this.origPosY;
       this.setActive(true);
       this.hasBeenInit = true;
-    } else if (this.playerInRange() === true) {
+    } else if (playerInRange(this, this.scene.getPlayer()) === true) {
       this.plantUp();
     } else {
       this.plantDown();
     }
-  }
-
-  playerInRange = () => {
-    let playerLeftX = this.scene.getPlayer().body.x - this.scene.getPlayer().body.width/2;
-    let playerRightX = this.scene.getPlayer().body.x + this.scene.getPlayer().body.width/2;
-    let plantLeftX = this.x - this.width/2;
-    let plantRightX = this.x + this.width/2;
-    if ((playerRightX >= plantLeftX && playerRightX <= plantRightX) || (playerLeftX <= plantRightX && playerLeftX >= plantLeftX)) {
-      return true;
-    }
-    return false;
   }
 
   die = () => {
