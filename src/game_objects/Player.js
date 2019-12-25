@@ -15,7 +15,7 @@ export default class Player extends GameSprite {
     this.playHit = false;
     this.playHitFail = false;
     this.hitCallback = () => {};
-    this.hitObject = null;
+    this.getHitObject = () => { return null; };
     this.playerDirection = 'right'; //  left, right
     this.overlappingLian = [];
     this.playerClimbing = false;
@@ -244,6 +244,8 @@ export default class Player extends GameSprite {
               this.playHit = false;
               this.hit(false);
               let hitObjectClassName = (this.getHitObject() !== null ? this.getHitObject().constructor.name : '');
+        // TODO
+        console.log('hitObjectClassName', hitObjectClassName);
               if (hitObjectClassName !== 'Pompeli' && hitObjectClassName !== 'RoundRock' && hitObjectClassName !== 'TreasureChest') {
                 this.playHitFail = true;
               } else {
@@ -289,6 +291,8 @@ export default class Player extends GameSprite {
               this.playHit = false;
               this.hit(false);
               let hitObjectClassName = (this.getHitObject() !== null ? this.getHitObject().constructor.name : '');
+      // TODO
+      console.log('hitObjectClassName', hitObjectClassName);
               if (hitObjectClassName !== 'Pompeli' && hitObjectClassName !== 'RoundRock' && hitObjectClassName !== 'TreasureChest') {
                 this.playHitFail = true;
               } else {
@@ -615,17 +619,9 @@ export default class Player extends GameSprite {
     this.overlappingLian[0] = overlapLian;
   }
 
-  registerHitCallback = (cb, hitObject = null) => {
+  registerHitCallback = (cb, getHitObject) => {
     this.hitCallback = cb;
-    this.setHitObject(hitObject);
-  }
-
-  setHitObject = (o) => {
-    this.hitObject = o;
-  }
-
-  getHitObject = () => {
-    return this.hitObject;
+    this.getHitObject = getHitObject;
   }
 
 }

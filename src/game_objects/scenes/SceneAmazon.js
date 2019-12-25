@@ -657,7 +657,7 @@ export default class SceneAmazon extends Phaser.Scene {
       player.isStandingOnSomething(true);
     } else {
       this.hitObject = rock;
-      this.player.registerHitCallback(this.hitRock, this.hitObject);
+      this.player.registerHitCallback(this.hitRock, this.getHitObject);
     }
   }
 
@@ -685,7 +685,7 @@ export default class SceneAmazon extends Phaser.Scene {
       player.isStandingOnSomething(true);
     } else {
       this.hitObject = treasure;
-      player.registerHitCallback(this.hitTreasure, this.hitObject);
+      player.registerHitCallback(this.hitTreasure, this.getHitObject);
     }
   }
 
@@ -703,7 +703,7 @@ export default class SceneAmazon extends Phaser.Scene {
       player.isStandingOnSomething(true);
     } else {
       this.hitObject = pompeli;
-      player.registerHitCallback(this.hitPompeli, this.hitObject);
+      player.registerHitCallback(this.hitPompeli, this.getHitObject);
     }
   }
 
