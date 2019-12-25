@@ -8,7 +8,7 @@ let isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.r
 let isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
 
 var config = {
-  type: (isChrome || isOpera === true ? Phaser.CANVAS : Phaser.AUTO),
+  type: Phaser.AUTO,
   width: 800,
   height: 600,
   pixelArt: true,

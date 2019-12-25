@@ -55,7 +55,7 @@ export default class EnemyBoss extends GameSprite {
   }
 
   checkFallDownTrigger = (player) => {
-    if (this.active === true && this.playerInRange(this, this.scene.getPlayer()) === true) {
+    if (this.active === true && playerInRange(this, this.scene.getPlayer()) === true) {
       this.fall(player);
     }
   }

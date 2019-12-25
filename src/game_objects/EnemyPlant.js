@@ -26,7 +26,11 @@ export default class EnemyPlant extends GameSprite {
   initEnemy() {
     this.setActive(false);
     this.flipY = this.yIsFlipped;
-    this.setOrigin(0.5, 1)
+    if (this.yIsFlipped === true) {
+      this.setOrigin(0.5, 0)
+    } else  {
+      this.setOrigin(0.5, 1)
+    }
     this.setBounce(0);
     this.setVelocityX(0);
     this.setVelocityY(0);
@@ -59,7 +63,7 @@ export default class EnemyPlant extends GameSprite {
   move = () => {
     if (this.hasBeenInit === false && (this.body.onFloor() === true || this.yIsFlipped === true)) {
       this.origPosY = this.y;
-      this.y = this.origPosY + 0;
+      this.setY(this.origPosY);
       this.origPosX = this.x;
       this.attackPosY = this.origPosY;
       this.setActive(true);
@@ -103,13 +107,21 @@ export default class EnemyPlant extends GameSprite {
   plantUp = () => {
     this.setSize(24, 40);
     this.playAnim('plantUp', true);
-    this.setOffset(0, (this.yIsFlipped === true ? 40 : 0));
+    if (this.yIsFlipped === false) {
+      this.setOffset(0, 0);
+    }
+    //this.setOffset(0, (this.yIsFlipped === true ? 40 : 0));
   }
 
   plantDown = () => {
     this.setSize(24, 20);
     this.playAnim('plantDown', true);
-    this.setOffset(0, (this.yIsFlipped === true ? 40 : 20));
+    if (this.yIsFlipped === false) {
+      this.setOffset(0, 20);
+    } else {
+      this.setOffset(0, 0);
+    }
+    //this.setOffset(0, (this.yIsFlipped === true ? 40 : 20));
   }
 
   plantDie = () => {
