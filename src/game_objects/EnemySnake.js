@@ -91,7 +91,9 @@ export default class EnemySnake extends GameSprite {
   die = () => {
     this.snakeDie();
     this.setActive(false);
-    this.scene.tweens.add({targets: this, x: this.x - 20, y: this.y + 500, duration: 3000, onComplete: this.activateReset});
+    if (this.scene) {
+      this.scene.tweens.add({targets: this, x: this.x - 20, y: this.y + 500, duration: 3000, onComplete: this.activateReset});
+    }
   }
 
   activateReset = () => {
@@ -101,7 +103,7 @@ export default class EnemySnake extends GameSprite {
 
   reset = () => {
     if (this.allowReset === true) {
-      if (this && this.scene.cam.worldView.contains(this.spawnPosX, this.spawnPosY) === false) {
+      if (this.scene && this.scene.cam.worldView.contains(this.spawnPosX, this.spawnPosY) === false) {
         this.attack = false;
         this.setY(this.spawnPosY);
         this.setX(this.spawnPosX);

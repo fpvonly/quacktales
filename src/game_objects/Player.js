@@ -567,11 +567,11 @@ export default class Player extends GameSprite {
         this.setVelocityY(0);
         if (enemyYisFlipped === true) {
           this.flipY = true;
-          this.scene.tweens.add({targets: this, x: enemy.body.x + enemy.body.halfWidth, duration: 40});
-          this.scene.tweens.add({targets: this, y: enemy.body.y, duration: 40});
+          this.setX(enemy.body.x + enemy.body.halfWidth);
+          this.setY(enemy.body.y + enemy.body.height);
         } else {
-          this.scene.tweens.add({targets: this, x: enemy.x, duration: 40});
-          this.scene.tweens.add({targets: this, y: enemy.y - this.body.height - 10, duration: 40});
+          this.setX(enemy.x);
+          this.setY(enemy.y - this.body.height - 20);
         }
 
         if (this.stuckTimeout === null) {

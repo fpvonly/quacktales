@@ -37,12 +37,6 @@ export default class EnemyBee extends GameSprite {
 
     this.getSpeedDirection();
 
-    this.interval = setInterval(() => {
-      if (this.scene && this.active === true) {
-        this.floatY *= -1;
-      }
-    }, 1500);
-
     this.scene.anims.create({
       key: 'beeFly',
       frames: this.scene.anims.generateFrameNumbers(this.spriteKey, {start: 0, end: 1}),
@@ -55,6 +49,10 @@ export default class EnemyBee extends GameSprite {
     if (this.direction === 'left') {
       this.velocityX = -40;
     }
+
+    this.interval = setInterval(() => {
+      this.floatY *= -1;
+    }, 1500);
 
     setTimeout(() => {
       this.start();
@@ -89,7 +87,6 @@ export default class EnemyBee extends GameSprite {
     }
   }
 
-
   start = () => {
     this.setActive(true).setVisible(true);
   }
@@ -106,6 +103,7 @@ export default class EnemyBee extends GameSprite {
   }
 
   die = (type = '') => {
+    this.setActive(false);
     this.setVelocityX(0);
     this.setVelocityY(0);
     if (this.scene && type !== 'outofbounds') {
@@ -116,22 +114,26 @@ export default class EnemyBee extends GameSprite {
         y: this.y + 500,
         duration: 3500,
         onComplete: () => {
-          this.setActive(false).setVisible(false).reset();
+          this.setVisible(false).reset();
         }
       });
     } else {
-      this.setActive(false).setVisible(false).reset();
+      this.setVisible(false).reset();
     }
   }
 
   reset = () => {
+    clearInterval(this.interval);
+    this.setX(this.spawn.x);
+    this.setY(this.spawn.y);
     this.timeout = setTimeout(() => {
       if (this) {
         this.setActive(true).setVisible(true);
         this.getSpeedDirection();
         this.rotation = 0;
-        this.setX(this.spawn.x);
-        this.setY(this.spawn.y);
+        this.interval = setInterval(() => {
+          this.floatY *= -1;
+        }, 1500);
       }
 
     }, this.delay);

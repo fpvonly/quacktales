@@ -36,6 +36,7 @@ export default class SceneAmazon extends Phaser.Scene {
       this.FINAL_BOSS_FIGHT = false;
       this.activateBossFightInterval = null;
       this.hitObject = null; // hit enabled object currently ready
+      this.bridgeIsCrumbling = false;
 
       // Sprites and groups
       this.enemies = null;
@@ -96,6 +97,7 @@ export default class SceneAmazon extends Phaser.Scene {
     }
 
     this.FINAL_BOSS_FIGHT = false;
+    this.bridgeIsCrumbling = false;
     this.physics.world.setFPS(60);
     this.cameraLvl = 1;
     this.cam = this.cameras.main;
@@ -326,7 +328,7 @@ export default class SceneAmazon extends Phaser.Scene {
     }
 
     // Rolling stone ball
-    this.rollingStoneBall = new RollingStone(this, this.rollingRockBallSpawnPoint.x, this.rollingRockBallSpawnPoint.y, 'rolling_stone', this.interactWithBridge, this.hurtPlayer);
+    this.rollingStoneBall = new RollingStone(this, this.rollingRockBallSpawnPoint.x, this.rollingRockBallSpawnPoint.y, 'rolling_stone', this.hurtPlayer);
 
     // Round rocks
     this.rocks = this.physics.add.group({immovable: true, allowGravity: true});
@@ -414,7 +416,6 @@ export default class SceneAmazon extends Phaser.Scene {
         enemy.move();
       });
     }
-
 
     if (this.getCameraLevel() === 5) {
       this.ceilingStones.children.iterate((stone) => {
@@ -632,9 +633,13 @@ export default class SceneAmazon extends Phaser.Scene {
     }
 
     let i = 0;
-    for (let stone of this.bridgeStones.children.entries){
-      i++;
-      stone.crumble(250*i, true);
+    if (this.bridgeIsCrumbling === false) {
+      for (let stone of this.bridgeStones.children.entries){
+        i++;
+        stone.crumble(250*i, true);
+      }
+
+      this.bridgeIsCrumbling = true;
     }
   }
 
@@ -734,6 +739,13 @@ export default class SceneAmazon extends Phaser.Scene {
   }
 
   resetGame = () => {
+    let resetPlaceWithNoTimeout = function(toReset) {
+      let o = toReset.children.iterate(function(o) {
+        o.setX(0); o.setY(0); o.setActive(false); o.setVisible(false);
+      });
+      return o;
+    };
+    let temp = null;
 
     this.bridgeStones.children.iterate(function(o) {
       o.clearTimeouts();
@@ -751,7 +763,14 @@ export default class SceneAmazon extends Phaser.Scene {
     });
 
     this.BOSS.clearTimeouts();
+    this.BOSS.destroy();
     this.player.destroy();
+
+    temp = resetPlaceWithNoTimeout(this.enemies);
+    temp = resetPlaceWithNoTimeout(this.hangingPlantEnemies);
+    temp = resetPlaceWithNoTimeout(this.hangingSpiderEnemies);
+    temp = resetPlaceWithNoTimeout(this.beeEnemies);
+    temp = resetPlaceWithNoTimeout(this.ghostEnemies);
 
     this.sound.removeByKey('amazonTheme');
     this.sound.removeByKey('gameOverSound');
@@ -767,6 +786,7 @@ export default class SceneAmazon extends Phaser.Scene {
 
     this.registry.destroy();
     this.events.off();
+
     if(this.restartInit === false){
       this.restartInit = true;
       this.scene.start('RestartAmazon');

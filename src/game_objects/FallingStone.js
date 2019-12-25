@@ -49,20 +49,20 @@ export default class FallingStone extends GameSprite {
   }
 
   hurtPlayer = () => {
-    if (this.isFalling === true && this.onCeiling === true) {
+    if (this.isFalling === true && this.onCeiling === true && this.scene) {
       this.hurtPlayerCallback(this.scene.getPlayer(), this);
     }
   }
 
   destroyAllStones = (stone, player) => {
-    if (this.isFalling === false) {
+    //if (this.isFalling === false) {
       this.interactWithStoneCallback(stone, player);
-    }
+    //}
   }
 
   crumble = (timeout = 0, useTween = false) => {
     this.isFalling = true;
-    if (useTween === true) {
+    if (useTween === true && this.scene) {
       this.timeout = setTimeout(() => {
         this.tween = this.scene.tweens.add({targets: this, y: this.y+500, duration: 3500, onComplete: () => {
           this.setActive(false);

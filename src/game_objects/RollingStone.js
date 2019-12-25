@@ -3,7 +3,7 @@ import GameSprite from './GameSprite.js';
 
 export default class RollingStone extends GameSprite {
 
-  constructor (scene, x, y, spriteKey, interactWithStoneCallback, hurtPlayerCallback = () => {}) {
+  constructor (scene, x, y, spriteKey, hurtPlayerCallback = () => {}) {
 
     super(scene, x, y, spriteKey);
 
@@ -17,7 +17,6 @@ export default class RollingStone extends GameSprite {
     this.setVelocityX(0);
     this.body.immovable = true;
     this.body.allowGravity = false;
-    this.interactWithStoneCallback = interactWithStoneCallback;
     this.hurtPlayerCallback = hurtPlayerCallback;
     this.tween = null;
     this.isFalling = false;
@@ -42,7 +41,7 @@ export default class RollingStone extends GameSprite {
   }
 
   hurtPlayer = () => {
-    if (this.isFalling === true) {
+    if (this.isFalling === true && this.scene) {
       this.hurtPlayerCallback(this.scene.getPlayer(), this);
     }
   }
@@ -64,7 +63,7 @@ export default class RollingStone extends GameSprite {
   }
 
   rollRight = () => {
-    if (this.body.onFloor() === true) {
+    if (this.body.onFloor() === true && this.scene) {
       this.tween = this.scene.tweens.add({targets: this, x: this.x+350, duration: 5000, onComplete: () => {
         if (this && this.body && this.body.onFloor() === true) {
           this.setActive(false);

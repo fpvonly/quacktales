@@ -45,7 +45,7 @@ export default class EnemyBoss extends GameSprite {
       this.hitCount++;
       this.enemyWasHurt = true;
     }
-    if (this.hitCount >= 3) {
+    if (this.hitCount >= 3 && this.scene) {
       this.setActive(false);
       this.scene.tweens.add({targets: this, y: this.y+200, duration: 1000, onComplete: () => {
         this.scene.gameOverAndReset(true);

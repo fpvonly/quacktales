@@ -49,7 +49,7 @@ export default class Enemy extends GameSprite {
   }
 
   getSpeedDirection = () => {
-    if (this.scene.getPlayer().body.x < this.body.x) {
+    if (this.scene && this.scene.getPlayer().body.x < this.body.x) {
       this.direction = 'left';
       this.velocityX = -70;
       this.flipX = false;
@@ -91,7 +91,7 @@ export default class Enemy extends GameSprite {
       this.oldX = bodyX;
     }
 
-    if (!Phaser.Geom.Rectangle.Overlaps(this.scene.physics.world.bounds, this.getBounds())) {
+    if (this.scene && !Phaser.Geom.Rectangle.Overlaps(this.scene.physics.world.bounds, this.getBounds())) {
       this.die('outofbounds');
     }
   }
@@ -101,7 +101,7 @@ export default class Enemy extends GameSprite {
     this.setVelocityY(0);
     this.playAnim('apeDie', true);
 
-    if (type !== 'outofbounds') {
+    if (type !== 'outofbounds' && this.scene) {
       this.scene.tweens.add({targets: this, x: this.x - 20, y: this.y +500, duration: 4000, onComplete: () => {
         this.setActive(false).setVisible(false).reset();
       }});

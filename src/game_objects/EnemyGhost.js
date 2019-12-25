@@ -39,9 +39,7 @@ export default class EnemyGhost extends GameSprite {
     this.getSpeedDirection();
 
     this.interval = setInterval(() => {
-      if (this.active === true && this.scene) {
-        this.floatY *= -1;
-      }
+      this.floatY *= -1;
     }, 1500);
 
     this.scene.anims.create({
@@ -53,7 +51,6 @@ export default class EnemyGhost extends GameSprite {
 
     this.flipX = (this.direction === 'right' ? true : false);
     this.playAnim('ghostFly', true);
-
     if (this.direction === 'left') {
       this.velocityX = -40;
     }
@@ -65,7 +62,7 @@ export default class EnemyGhost extends GameSprite {
 
   getSpeedDirection = () => {
     let velocityX = 0;
-    if (this.scene.getPlayer().x < this.x) {
+    if (this.scene && this.scene.getPlayer().x < this.x) {
       this.direction = 'left';
       this.velocityX = -40;
       this.flipX = false;
@@ -108,7 +105,7 @@ export default class EnemyGhost extends GameSprite {
   die = (type = '') => {
     this.setVelocityX(0);
     this.setVelocityY(0);
-    if (type !== 'outofbounds') {
+    if (type !== 'outofbounds' && this.scene) {
       this.scene.tweens.add({
         targets: this,
         rotation: 10,
@@ -125,13 +122,17 @@ export default class EnemyGhost extends GameSprite {
   }
 
   reset = () => {
+    clearInterval(this.interval);
+    this.setX(this.spawn.x);
+    this.setY(this.spawn.y);
     this.timeout = setTimeout(() => {
       if (this && this.scene) {
         this.setActive(true).setVisible(true);
         this.getSpeedDirection();
         this.rotation = 0;
-        this.setX(this.spawn.x);
-        this.setY(this.spawn.y);
+        this.interval = setInterval(() => {
+          this.floatY *= -1;
+        }, 1500);
       }
     }, this.delay);
   }
@@ -139,6 +140,7 @@ export default class EnemyGhost extends GameSprite {
   clearTimeouts = () => {
     clearInterval(this.interval);
     clearTimeout(this.timeout);
+    return true;
   }
 
 }

@@ -83,7 +83,9 @@ export default class EnemySpider extends GameSprite {
     this.setActive(false);
     this.spiderDie();
     this.tween = null;
-    this.tween = this.scene.tweens.add({targets: this, x: this.x, y: this.y + 500, duration: 3000, onComplete: this.activateReset});
+    if (this.scene) {
+      this.tween = this.scene.tweens.add({targets: this, x: this.x, y: this.y + 500, duration: 3000, onComplete: this.activateReset});
+    }
   }
 
   activateReset = () => {
@@ -92,7 +94,7 @@ export default class EnemySpider extends GameSprite {
   }
 
   reset = () => {
-    if (this && this.allowReset === true && this.scene.cam.worldView.contains(this.spawn.x, this.spawn.y) === false) {
+    if (this.scene && this.allowReset === true && this.scene.cam.worldView.contains(this.spawn.x, this.spawn.y) === false) {
       this.setY(this.spawn.y);
       this.setX(this.spawn.x);
       this.setVelocityY(0);
@@ -123,7 +125,7 @@ export default class EnemySpider extends GameSprite {
   spiderUp = () => {
     if (this.y != this.origPosY && this.active === true) {
       this.spiderStopY();
-      if (this.tween === null) {
+      if (this.tween === null && this.scene) {
         this.tween = this.scene.tweens.add({targets: this, x: this.x, y: this.origPosY, duration: 1000, ease: 'none', onComplete: this.spiderStop});
       }
     }

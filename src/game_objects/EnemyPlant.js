@@ -84,7 +84,9 @@ export default class EnemyPlant extends GameSprite {
   die = () => {
     this.setActive(false);
     this.plantDie();
-    this.scene.tweens.add({targets: this, x: this.x - 20, y: this.y + 500, duration: 3000, onComplete: this.activateReset});
+    if (this.scene) {
+      this.scene.tweens.add({targets: this, x: this.x - 20, y: this.y + 500, duration: 3000, onComplete: this.activateReset});
+    }
   }
 
   activateReset = () => {
