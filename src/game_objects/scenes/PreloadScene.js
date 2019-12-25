@@ -39,7 +39,7 @@ export default class Preload extends Phaser.Scene {
     );
     this.load.spritesheet('scrooge',
       'assets/scrooge.png',
-      { frameWidth: 24, frameHeight: 32 }
+      { frameWidth: 26, frameHeight: 32 }
     );
     this.load.spritesheet('scrooge_hurt',
       'assets/scrooge_hurt.png',
@@ -47,7 +47,7 @@ export default class Preload extends Phaser.Scene {
     );
     this.load.spritesheet('bee',
       'assets/bee.png',
-      { frameWidth: 16, frameHeight: 16 }
+      { frameWidth: 18, frameHeight: 18 }
     );
     this.load.spritesheet('snake',
       'assets/snake.png',
@@ -55,7 +55,7 @@ export default class Preload extends Phaser.Scene {
     );
     this.load.spritesheet('ape',
       'assets/ape.png',
-      { frameWidth: 28, frameHeight: 32 }
+      { frameWidth: 30, frameHeight: 33 }
     );
     this.load.spritesheet('plant',
       'assets/plant.png',

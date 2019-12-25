@@ -4,8 +4,11 @@ import TitleScene from './game_objects/scenes/TitleScene.js';
 import RestartAmazon from './game_objects/scenes/RestartAmazon.js';
 import SceneAmazon from './game_objects/scenes/SceneAmazon.js';
 
+let isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+let isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
 var config = {
-  type: Phaser.CANVAS,
+  type: (isChrome || isOpera === true ? Phaser.CANVAS : Phaser.AUTO),
   width: 800,
   height: 600,
   pixelArt: true,

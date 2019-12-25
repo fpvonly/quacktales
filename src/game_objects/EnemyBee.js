@@ -26,7 +26,8 @@ export default class EnemyBee extends GameSprite {
     this.setActive(false);
     this.setVisible(false);
     this.body.setAllowGravity(false);
-    this.setSize(16,16);
+    this.setSize(16, 16);
+    this.setOffset(1, 1);
     this.setBounce(0);
     this.setGravityY(0);
     this.setGravityX(0);

@@ -11,7 +11,7 @@ export default class HealthBarScene extends Phaser.Scene {
         default: 'arcade',
         arcade: {
           gravity: { y : 0 },
-          debug: true
+          debug: false
         }
       }
     });

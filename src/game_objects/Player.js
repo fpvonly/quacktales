@@ -41,7 +41,7 @@ export default class Player extends GameSprite {
 
   initPlayer() {
     this.setSize(24, 25);
-    this.setOffset(0, 7);
+    this.setOffset(1, 7);
     this.setBounce(0);
     this.setCollideWorldBounds(true);
     //this.body.immovable = true;
@@ -274,7 +274,7 @@ export default class Player extends GameSprite {
         }
 
         this.setSize(24, 25);
-        this.setOffset(0, 7);
+        this.setOffset(1, 7);
       } else if (this.cursors.right.isDown) {
         if (this.playerDirection === 'right' && (Math.floor(this.body.x) === this.oldX || this.body.onWall()) && this.jump() === false && this.pogo() === false) {
 
@@ -318,7 +318,7 @@ export default class Player extends GameSprite {
         }
 
         this.setSize(24, 25);
-        this.setOffset(0, 7);
+        this.setOffset(1, 7);
       } else if (this.cursors.down.isDown) {
         this.setVelocityX(0);
         this.playAnim((this.playerDirection === 'right' ? 'duckRight' : 'duckLeft'), false);
@@ -330,7 +330,7 @@ export default class Player extends GameSprite {
         this.hit(false);
         this.oldX = -1;
         this.setSize(24, 25);
-        this.setOffset(0, 7);
+        this.setOffset(1, 7);
       }
 
       this.controlJump();
@@ -568,7 +568,7 @@ export default class Player extends GameSprite {
         if (enemyYisFlipped === true) {
           this.flipY = true;
           this.scene.tweens.add({targets: this, x: enemy.body.x + enemy.body.halfWidth, duration: 40});
-          this.scene.tweens.add({targets: this, y: enemy.body.y + enemy.body.height, duration: 40});
+          this.scene.tweens.add({targets: this, y: enemy.body.y, duration: 40});
         } else {
           this.scene.tweens.add({targets: this, x: enemy.x, duration: 40});
           this.scene.tweens.add({targets: this, y: enemy.y - this.body.height - 10, duration: 40});
