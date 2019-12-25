@@ -735,7 +735,7 @@ export default class SceneAmazon extends Phaser.Scene {
     }, 3000);
   }
 
-  resetGame = () => {
+  resetGame = (toTitleScreen = false) => {
     let resetPlaceWithNoTimeout = function(toReset) {
       let o = toReset.children.iterate(function(o) {
         o.setX(0); o.setY(0); o.setActive(false); o.setVisible(false);
@@ -784,9 +784,13 @@ export default class SceneAmazon extends Phaser.Scene {
     this.registry.destroy();
     this.events.off();
 
-    if(this.restartInit === false){
+    if(this.restartInit === false) {
       this.restartInit = true;
-      this.scene.start('RestartAmazon');
+      if (toTitleScreen === true) {
+        this.scene.start('TitleScene');
+      } else {
+        this.scene.start('RestartAmazon');
+      }
     }
   }
 
@@ -799,9 +803,6 @@ export default class SceneAmazon extends Phaser.Scene {
       this.successTxt = this.add.text(camView.centerX, camView.centerY, 'SUCCESS!', { font: 'bold Arial', fontSize: '32px', fill: '#FFF' });
       this.successTxt.setOrigin(0.5);
       this.scene.pause();
-      setTimeout(() => {
-        this.scene.start('TitleScene');
-      }, 8000);
     } else {
       this.levelThemeAudio.stop();
       this.bossBattleAudio.stop();
@@ -810,10 +811,9 @@ export default class SceneAmazon extends Phaser.Scene {
       this.failTxt = this.add.text(camView.centerX, camView.centerY, 'GAME OVER', { font: 'bold Arial', fontSize: '32px', fill: '#FFF' });
       this.failTxt.setOrigin(0.5);
       this.scene.pause();
-      setTimeout(() => {
-        this.scene.start('TitleScene');
-      }, 5000);
     }
+    setTimeout(() => { this.resetGame(true); }, 8000);
+
     this.HealthBarScene.scene.setVisible(false);
   }
 
