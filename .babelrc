@@ -8,8 +8,7 @@
         },
         "useBuiltIns": "entry"
       }
-    ],
-    "react"
+    ]
   ],
   "plugins": [
        "transform-class-properties",

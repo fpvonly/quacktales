@@ -8,6 +8,7 @@ export default class TreasureChest extends GameSprite {
 
     super(scene, x, y, spriteKey);
 
+    this.gameObjectName = 'TreasureChest';
     this.setSize(16, 16);
     this.setBounce(0);
     this.setCollideWorldBounds(true);

@@ -192,6 +192,7 @@ export default class SceneAmazon extends Phaser.Scene {
         'climbAudio': this.climbAudio
       }
     );
+    this.player.registerHitCallback(() => {}, this.getHitObject);
     this.cam.setBounds(0, 0, this.platforms.width, this.platforms.height);
     this.camDolly = new Phaser.Geom.Point(this.player.x, this.cameraOrigY);
     this.cam.startFollow(this.camDolly);

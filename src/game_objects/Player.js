@@ -243,9 +243,7 @@ export default class Player extends GameSprite {
               this.hitCallback();
               this.playHit = false;
               this.hit(false);
-              let hitObjectClassName = (this.getHitObject() !== null ? this.getHitObject().constructor.name : '');
-        // TODO
-        console.log('hitObjectClassName', hitObjectClassName);
+              let hitObjectClassName = (this.getHitObject() !== null ? this.getHitObject().gameObjectName : '');
               if (hitObjectClassName !== 'Pompeli' && hitObjectClassName !== 'RoundRock' && hitObjectClassName !== 'TreasureChest') {
                 this.playHitFail = true;
               } else {
@@ -290,9 +288,7 @@ export default class Player extends GameSprite {
               this.hitCallback();
               this.playHit = false;
               this.hit(false);
-              let hitObjectClassName = (this.getHitObject() !== null ? this.getHitObject().constructor.name : '');
-      // TODO
-      console.log('hitObjectClassName', hitObjectClassName);
+              let hitObjectClassName = (this.getHitObject() !== null ? this.getHitObject().gameObjectName : '');
               if (hitObjectClassName !== 'Pompeli' && hitObjectClassName !== 'RoundRock' && hitObjectClassName !== 'TreasureChest') {
                 this.playHitFail = true;
               } else {
@@ -360,7 +356,7 @@ export default class Player extends GameSprite {
     }
 
     if (this.hit() === false) {
-      this.registerHitCallback(() => {});
+      this.registerHitCallback(() => {}, () => { return null; });
     }
   }
 

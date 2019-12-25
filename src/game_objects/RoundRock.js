@@ -7,6 +7,7 @@ export default class RoundRock extends GameSprite {
 
     super(scene, x, y, spriteKey);
 
+    this.gameObjectName = 'RoundRock';
     this.setSize(16, 16);
     this.setBounce(0);
     this.setCollideWorldBounds(true);
