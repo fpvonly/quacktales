@@ -1,6 +1,6 @@
 import GameSprite from './GameSprite.js';
 
-export default class Enemy extends GameSprite {
+export default class EnemyApe extends GameSprite {
 
   constructor (scene, spawn, x, y, spriteKey, delay) {
     super(scene, x, y, spriteKey);

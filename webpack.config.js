@@ -29,7 +29,7 @@ var config = {
     open: true,
     historyApiFallback: true
   },
-  /*devtool: 'eval-source-map',*/
+  devtool: 'eval-source-map',
   plugins: [
 
   ]
@@ -39,6 +39,7 @@ var config = {
 module.exports = (env, argv) => {
   if (argv.mode === 'production') {
     config.devServer = {};
+    config.devtool = '';
     config.bail = true;
     config.stats = 'verbose';
     config.plugins = config.plugins.concat([
