@@ -11,13 +11,12 @@ export default class GameSprite extends Phaser.Physics.Arcade.Sprite {
   }
 
   playAnim = (key, ignoreIfPlaying = false, playReverse = false) => {
-    if (key) {
+    if (key && this.anims) {
       if (playReverse === true) {
         this.anims.playReverse(key, ignoreIfPlaying);
       } else {
         this.anims.play(key, ignoreIfPlaying);
       }
-
     }
   }
 

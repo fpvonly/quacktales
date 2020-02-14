@@ -17,6 +17,7 @@ export default class Diamond extends GameSprite {
     this.body.allowGravity = true;
     this.treasureChestObject = treasureChestObject;
     this.collected = false;
+    this.timeout = null;
 
     this.scene.anims.create({
       key: 'rotate',
@@ -38,7 +39,7 @@ export default class Diamond extends GameSprite {
   }
 
   playDiamondRotateAnimation = () => {
-    if (this && this.collected === false) {
+    if (typeof this !== 'undefined' && this.collected === false) {
       this.playAnim('rotate');
       this.once('animationcomplete', () => {
         this.setActive(true);
@@ -56,6 +57,9 @@ export default class Diamond extends GameSprite {
     this.destroy();
   }
 
+  clearTimeouts = () => {
+    clearTimeout(this.timeout);
+  }
 
 
 }

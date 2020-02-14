@@ -758,6 +758,9 @@ export default class SceneAmazon extends Phaser.Scene {
         o.clearTimeouts();
       }
     });
+    this.treasures.children.iterate(function(o) {
+      o.clearTimeouts();
+    });
 
     this.BOSS.clearTimeouts();
     this.BOSS.destroy();

@@ -48,4 +48,8 @@ export default class TreasureChest extends GameSprite {
     });
   }
 
+  clearTimeouts = () => {
+    this.diamond.clearTimeouts();
+  }
+
 }
