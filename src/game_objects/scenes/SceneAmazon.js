@@ -745,13 +745,19 @@ export default class SceneAmazon extends Phaser.Scene {
     let temp = null;
 
     this.bridgeStones.children.iterate(function(o) {
-      o.clearTimeouts();
+      if (o.clearTimeouts) {
+        o.clearTimeouts();
+      }
     });
     this.ceilingStones.children.iterate(function(o) {
-      o.clearTimeouts();
+      if (o.clearTimeouts) {
+        o.clearTimeouts();
+      }
     });
     this.ghostEnemies.children.iterate(function(o) {
-      o.clearTimeouts();
+      if (o.clearTimeouts) {
+        o.clearTimeouts();
+      }
     });
     this.enemies.children.iterate(function(o) {
       if (o.clearTimeouts) {

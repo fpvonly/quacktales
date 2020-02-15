@@ -93,7 +93,7 @@ export default class EnemyPlant extends GameSprite {
   }
 
   reset = () => {
-    if (this && this.scene.cam.worldView.contains(this.spawn.x, this.spawn.y) === false) {
+    if (this && this.scene && this.scene.cam.worldView.contains(this.spawn.x, this.spawn.y) === false) {
       this.setY(this.spawn.y);
       this.setX(this.spawn.x);
       this.setVelocityY(0);
@@ -132,6 +132,7 @@ export default class EnemyPlant extends GameSprite {
 
   clearTimeouts = () => {
     clearTimeout(this.timeout);
+    clearInterval(this.interval);
   }
 
 }
