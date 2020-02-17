@@ -14,7 +14,7 @@ var config = {
   pixelArt: true,
   antialias: false,
   roundPixels: false,
-  fps: {target: 60}
+  fps: {target: 240}
 };
 
 let game = new Phaser.Game(config);

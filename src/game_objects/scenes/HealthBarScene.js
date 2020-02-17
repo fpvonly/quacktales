@@ -22,7 +22,7 @@ export default class HealthBarScene extends Phaser.Scene {
 
   create() {
     this.lives = 3;
-    this.physics.world.setBounds(0, 0, 100, 50);
+  //  this.physics.world.setBounds(0, 0, 100, 50);
     this.cameras.main.setBackgroundColor('#000000');
     this.cameras.main.setViewport(0, 0, 240, 35);
 
@@ -30,7 +30,6 @@ export default class HealthBarScene extends Phaser.Scene {
     text.setOrigin(0, 0);
 
     this.items = this.physics.add.group({immovable: true, allowGravity: false});
-
     for (let i = 0; i < 6; i++) {
       let item = this.items.create(110 + (i*20),20, 'items');
       item.setFrame(5);

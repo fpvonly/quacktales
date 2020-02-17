@@ -98,7 +98,7 @@ export default class SceneAmazon extends Phaser.Scene {
 
     this.FINAL_BOSS_FIGHT = false;
     this.bridgeIsCrumbling = false;
-    this.physics.world.setFPS(60);
+    this.physics.world.setFPS(240);
     this.cameraLvl = 1;
     this.cam = this.cameras.main;
     this.cam.roundPixels = false;
