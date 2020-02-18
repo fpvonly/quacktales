@@ -768,6 +768,8 @@ export default class SceneAmazon extends Phaser.Scene {
       o.clearTimeouts();
     });
 
+    this.rollingStoneBall.clearTimeouts();
+
     this.BOSS.clearTimeouts();
     this.BOSS.destroy();
     this.player.destroy();

@@ -21,6 +21,7 @@ export default class RollingStone extends GameSprite {
     this.hurtPlayerCallback = hurtPlayerCallback;
     this.tween = null;
     this.isFalling = false;
+    this.timeout = null;
 
     this.scene.anims.create({
       key: 'still',
@@ -55,7 +56,7 @@ export default class RollingStone extends GameSprite {
 
   fall = (player) => {
     this.isFalling = true;
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
       this.playAnim('roll', true);
       this.body.allowGravity = true;
       this.setGravityY(300);
@@ -72,6 +73,10 @@ export default class RollingStone extends GameSprite {
         }
       }});
     }
+  }
+
+  clearTimeouts = () => {
+    clearTimeout(this.timeout);
   }
 
 }
