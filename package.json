@@ -33,8 +33,9 @@
   "scripts": {
     "dev": "webpack-dev-server --mode development",
     "prodbuild": "webpack --mode production",
-    "prodbackend": "forever start --append server.js",
-    "foreverrestart": "forever restart server.js"
+    "startprodbackend": "forever start --append server.js",
+    "foreverrestart": "forever restart server.js",
+    "foreverstop": "forever stop server.js"
   },
   "repository": {
     "type": "git",
