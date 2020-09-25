@@ -16,6 +16,7 @@ export default class Player extends GameSprite {
     this.playHitFail = false;
     this.hitCallback = () => {};
     this.getHitObject = () => { return null; };
+    this.hitObjectClassNamePrevious = '';
     this.playerDirection = 'right'; //  left, right
     this.overlappingLian = [];
     this.playerClimbing = false;
@@ -243,9 +244,13 @@ export default class Player extends GameSprite {
               this.hitCallback();
               this.playHit = false;
               this.hit(false);
-              let hitObjectClassName = (this.getHitObject() !== null ? this.getHitObject().gameObjectName : '');
-              if (hitObjectClassName !== 'Pompeli' && hitObjectClassName !== 'RoundRock' && hitObjectClassName !== 'TreasureChest') {
-                this.playHitFail = true;
+              let hitObjectClassName = this.getHitObject();
+              this.playHitFail = true;
+              if (hitObjectClassName === 'Pompeli' || hitObjectClassName === 'RoundRock' || hitObjectClassName === 'TreasureChest') {
+                this.playHitFail = false;
+                if(hitObjectClassName === 'RoundRock') {
+                  this.hitObjectClassNamePrevious = 'RoundRock'; // needed for not giving a hit fail animation after the rock has vanished and the re-hit hits the air
+                }
               } else {
                 if (this.hitOkAudio.isPlaying === false) {
                   this.hitOkAudio.play({loop: false});
@@ -271,6 +276,7 @@ export default class Player extends GameSprite {
           this.playHitFail = false;
           this.hit(false);
           this.oldX = Math.floor(this.body.x);
+          this.hitObjectClassNamePrevious = '';
         }
 
         this.setSize(24, 25);
@@ -280,7 +286,7 @@ export default class Player extends GameSprite {
 
           if (this.hit() === false && this.playHit === false && this.playHitFail === false) {  // HIT PHASE 0
             this.hit(true);
-          } else if (this.hit() === true && this.playHit === false) { // HIT PHASE 2
+          } else if (this.hit() === true && this.playHit === false) { // HIT PHASE 1
             this.playAnim('hitRight1');
           } else if (this.playHit === true) {   // HIT PHASE 2
             this.playAnim('hitRightFull', true);
@@ -288,9 +294,13 @@ export default class Player extends GameSprite {
               this.hitCallback();
               this.playHit = false;
               this.hit(false);
-              let hitObjectClassName = (this.getHitObject() !== null ? this.getHitObject().gameObjectName : '');
-              if (hitObjectClassName !== 'Pompeli' && hitObjectClassName !== 'RoundRock' && hitObjectClassName !== 'TreasureChest') {
-                this.playHitFail = true;
+              let hitObjectClassName = this.getHitObject();
+              this.playHitFail = true;
+              if (hitObjectClassName === 'Pompeli' || hitObjectClassName === 'RoundRock' || hitObjectClassName === 'TreasureChest') {
+                this.playHitFail = false;
+                if(hitObjectClassName === 'RoundRock') {
+                  this.hitObjectClassNamePrevious = 'RoundRock';
+                }
               } else {
                 if (this.hitOkAudio.isPlaying === false) {
                   this.hitOkAudio.play({loop: false});
@@ -315,6 +325,7 @@ export default class Player extends GameSprite {
           this.hit(false);
           this.playHitFail = false;
           this.oldX = Math.floor(this.body.x);
+          this.hitObjectClassNamePrevious = '';
         }
 
         this.setSize(24, 25);
@@ -617,7 +628,12 @@ export default class Player extends GameSprite {
 
   registerHitCallback = (cb, getHitObject) => {
     this.hitCallback = cb;
-    this.getHitObject = getHitObject;
+    this.getHitObject = () => {
+      let o = getHitObject();
+      let hitObjectClassName = (o !== null ? o.gameObjectName : (this.hitObjectClassNamePrevious === 'RoundRock' ? this.hitObjectClassNamePrevious : ''));
+
+      return hitObjectClassName;
+    }
   }
 
 }

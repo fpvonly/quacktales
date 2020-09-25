@@ -617,6 +617,7 @@ export default class SceneAmazon extends Phaser.Scene {
 
   destroyRock = (rock, walls) => {
     if (rock.moving === true) {
+      this.hitObject = null;
       rock.disable();
     }
   }
@@ -663,7 +664,7 @@ export default class SceneAmazon extends Phaser.Scene {
   }
 
   hitRock = () => {
-    if (this.hitObject != null) {
+    if (this.hitObject !== null && typeof this.hitObject !== 'undefined') {
       this.hitObject.moveTo(this.player.playerDirection);
     }
   }
@@ -826,10 +827,6 @@ export default class SceneAmazon extends Phaser.Scene {
     setTimeout(() => { this.resetGame(true); }, 8000);
 
     this.HealthBarScene.scene.setVisible(false);
-  }
-
-  setHitObject = (o) => {
-    this.hitObject = o;
   }
 
   getHitObject = () => {

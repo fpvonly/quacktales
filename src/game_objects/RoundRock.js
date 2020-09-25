@@ -44,19 +44,20 @@ export default class RoundRock extends GameSprite {
     }, 100);
   }
 
-
   moveTo = (dir = 'right', rock) => {
-    this.moving = true;
-    if (dir === 'right') {
-      this.allowGravity = false;
-      this.setBounce(1);
-      this.setVelocity(250, -250);
-      this.setCollideWorldBounds(true);
-    } else {
-      this.allowGravity = false;
-      this.setBounce(1);
-      this.setVelocity(-250, -250);
-      this.setCollideWorldBounds(true);
+    if(typeof this !== 'undefined') {
+      this.moving = true;
+      if (dir === 'right') {
+        this.allowGravity = false;
+        this.setBounce(1);
+        this.setVelocity(250, -250);
+        this.setCollideWorldBounds(true);
+      } else {
+        this.allowGravity = false;
+        this.setBounce(1);
+        this.setVelocity(-250, -250);
+        this.setCollideWorldBounds(true);
+      }
     }
   }
 
