@@ -1,0 +1,1 @@
+The L1_amazon file in this folder has no extrusion applied. The file is only for Tiled editor usage (for game tile visual presentation within the editor)

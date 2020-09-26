@@ -18,6 +18,8 @@ export default class Player extends GameSprite {
     this.getHitObject = () => { return null; };
     this.hitObjectClassNamePrevious = '';
     this.playerDirection = 'right'; //  left, right
+    this.pogoDirectionWhenHittingWall = '';
+    this.pogoXWhenHittingWall = 0;
     this.overlappingLian = [];
     this.playerClimbing = false;
     this.cancelClimb = false;
@@ -236,7 +238,7 @@ export default class Player extends GameSprite {
 
           if (this.hit() === false && this.playHit === false && this.playHitFail === false) {  // HIT PHASE 0
             this.hit(true);
-          } else if (this.hit() === true && this.playHit === false) { // HIT PHASE 2
+          } else if (this.hit() === true && this.playHit === false) { // HIT PHASE 1
             this.playAnim('hitLeft1');
           } else if (this.playHit === true) {   // HIT PHASE 2
             this.playAnim('hitLeftFull', true);
@@ -279,8 +281,8 @@ export default class Player extends GameSprite {
           this.hitObjectClassNamePrevious = '';
         }
 
-        this.setSize(24, 25);
-        this.setOffset(1, 7);
+        this.resetHitBox();
+
       } else if (this.cursors.right.isDown) {
         if (this.playerDirection === 'right' && (Math.floor(this.body.x) === this.oldX || this.body.onWall()) && this.jump() === false && this.pogo() === false) {
 
@@ -328,8 +330,8 @@ export default class Player extends GameSprite {
           this.hitObjectClassNamePrevious = '';
         }
 
-        this.setSize(24, 25);
-        this.setOffset(1, 7);
+        this.resetHitBox();
+
       } else if (this.cursors.down.isDown) {
         this.setVelocityX(0);
         this.playAnim((this.playerDirection === 'right' ? 'duckRight' : 'duckLeft'), false);
@@ -340,8 +342,7 @@ export default class Player extends GameSprite {
         this.playAnim((this.playerDirection === 'right' ? 'turnRight' : 'turnLeft'));
         this.hit(false);
         this.oldX = -1;
-        this.setSize(24, 25);
-        this.setOffset(1, 7);
+        this.resetHitBox();
       }
 
       this.controlJump();
@@ -368,6 +369,17 @@ export default class Player extends GameSprite {
 
     if (this.hit() === false) {
       this.registerHitCallback(() => {}, () => { return null; });
+    }
+  }
+
+  resetHitBox = () => { // prevent falling through wall after pogoing and hitting a wall
+    if (this.pogo() === false && (this.pogoDirectionWhenHittingWall === 'left' || this.pogoDirectionWhenHittingWall === 'right')  && Math.abs(this.body.x - this.pogoXWhenHittingWall) >= 15) {
+      this.setSize(24, 25);
+      this.setOffset(1, 7);
+      this.pogoDirectionWhenHittingWall = '';
+    } else if (this.pogoDirectionWhenHittingWall === '' || Math.abs(this.pogoXWhenHittingWall - this.body.x) > 25) {
+      this.setSize(24, 25);
+      this.setOffset(1, 7);
     }
   }
 
@@ -407,7 +419,7 @@ export default class Player extends GameSprite {
     }
   }
 
-  controlJump = () => {
+  controlJump = () => { // must be called from/after function 'control'
 
     /* If player gets hurt, it will cancel jump */
     if (this.hurtState === true) {
@@ -460,6 +472,10 @@ export default class Player extends GameSprite {
       }
       this.setSize(4, 25);
       this.setOffset(10, 7);
+      if (this.body.onWall()) {
+        this.pogoDirectionWhenHittingWall = this.playerDirection;
+        this.pogoXWhenHittingWall = this.body.x;
+      }
     } else { // Normal jumping and freefall situations
       if (this.jump() === true) {
         if (this.body.onFloor()) {
@@ -487,7 +503,7 @@ export default class Player extends GameSprite {
           this.jump(false);
         }
 
-      } else if (!this.body.onFloor()) { // freefall
+      } else if (!this.body.onFloor()) { //  freefall (e.g after pogo)
         if (this.scene.physics.overlap(this, this.overlappingLian[0]) && this.cancelClimb === false) {
           this.climb(true);
         } else if (this.isStandingOnSomething() === true) { // if standing on an object

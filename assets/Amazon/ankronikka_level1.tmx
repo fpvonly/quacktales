@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="154" height="106" tilewidth="16" tileheight="16" infinite="0" nextlayerid="49" nextobjectid="176">
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="154" height="106" tilewidth="16" tileheight="16" infinite="0" nextlayerid="49" nextobjectid="176">
+ <editorsettings>
+  <export target="ankronikka_level1.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" name="L1_amazon" tilewidth="16" tileheight="16" tilecount="98" columns="14">
   <image source="L1_amazon" trans="ff00ff" width="224" height="112"/>
  </tileset>
@@ -291,7 +294,11 @@
   <object id="100" name="plant_spawn" gid="91" x="1104" y="752" width="16" height="16" visible="0"/>
   <object id="101" name="plant_upsidedown_spawn" gid="91" x="672" y="648.273" width="16" height="16" visible="0"/>
   <object id="102" name="plant_upsidedown_spawn" gid="91" x="704" y="648.273" width="16" height="16" visible="0"/>
-  <object id="103" name="ape_spawn" gid="92" x="736" y="720" width="16" height="16" visible="0"/>
+  <object id="103" name="ape_spawn" gid="92" x="736" y="720" width="16" height="16" visible="0">
+   <properties>
+    <property name="DO_NOT_REAPPEAR_AFTER_DEATH" type="bool" value="true"/>
+   </properties>
+  </object>
   <object id="104" name="plant_spawn" gid="91" x="1712" y="800" width="16" height="16" visible="0"/>
   <object id="155" name="ghost_spawn" gid="91" x="2208" y="480" width="16" height="16" visible="0"/>
   <object id="168" name="spider_spawn" gid="92" x="1712" y="400" width="16" height="16" visible="0"/>

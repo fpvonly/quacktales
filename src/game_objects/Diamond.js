@@ -61,5 +61,4 @@ export default class Diamond extends GameSprite {
     clearTimeout(this.timeout);
   }
 
-
 }

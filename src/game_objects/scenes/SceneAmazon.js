@@ -12,6 +12,7 @@ import GameSprite from '../GameSprite.js';
 export default class SceneAmazon extends Phaser.Scene {
 
   constructor() {
+
     super({
       key: 'SceneAmazon',
       active: false,
@@ -20,67 +21,66 @@ export default class SceneAmazon extends Phaser.Scene {
         arcade: {
           gravity: { y : 300 },
           tileBias: 5,
-          debug: false
+          debug: (window.location.search.indexOf('mode=debug') !== -1 ?  true : false)
         }
       }
+    });
 
-      });
+    this.cameraOrigY = 0;
+    this.fixedX = 0;
 
-      this.cameraOrigY = 0;
-      this.fixedX = 0;
+    this.map;
+    this.mapTiles;
+    this.platforms;
+    this.player;
+    this.FINAL_BOSS_FIGHT = false;
+    this.activateBossFightInterval = null;
+    this.hitObject = null; // hit enabled object currently ready
+    this.bridgeIsCrumbling = false;
 
-      this.map;
-      this.mapTiles;
-      this.platforms;
-      this.player;
-      this.FINAL_BOSS_FIGHT = false;
-      this.activateBossFightInterval = null;
-      this.hitObject = null; // hit enabled object currently ready
-      this.bridgeIsCrumbling = false;
+    // Sprites and groups
+    this.enemies = null;
+    this.enemiesFloating = null;
+    this.lians = null;
+    this.rocks = null;
+    this.pompelis = null;
+    this.spikeAreas = null;
+    this.rollingStoneBall = null;
+    this.BOSS = null;
+    this.deathSpots = null;
 
-      // Sprites and groups
-      this.enemies = null;
-      this.enemiesFloating = null;
-      this.lians = null;
-      this.rocks = null;
-      this.pompelis = null;
-      this.spikeAreas = null;
-      this.rollingStoneBall = null;
-      this.BOSS = null;
-      this.deathSpots = null;
+    // Spawns
+    this.bridge = [];
+    this.fallingCeiling = [];
+    this.roundRockSpawnPoints = [];
+    this.pompeliSpawnPoints = [];
+    this.treasureSpawnPoints = [];
+    this.apeSpawnPoints = [];
+    this.snakeSpawnPoints = [];
+    this.plantSpawnPoints = [];
+    this.plantUpsideDownSpawnPoints = [];
+    this.beeSpawnPoints = [];
+    this.ghostSpawnPoints = [];
+    this.spiderSpawnPoints = [];
 
-      // Spawns
-      this.bridge = [];
-      this.fallingCeiling = [];
-      this.roundRockSpawnPoints = [];
-      this.pompeliSpawnPoints = [];
-      this.treasureSpawnPoints = [];
-      this.apeSpawnPoints = [];
-      this.snakeSpawnPoints = [];
-      this.plantSpawnPoints = [];
-      this.plantUpsideDownSpawnPoints = [];
-      this.beeSpawnPoints = [];
-      this.ghostSpawnPoints = [];
-      this.spiderSpawnPoints = [];
+    // Enemy/player collision listener objects
+    this.collideWithBees = null;
+    this.collideWithGroundEnemies = null;
+    this.collideWithHangingPlantEnemies = null;
+    this.collideWithHangingSpiderEnemies = null;
+    this.collideWithSpikes = null;
+    this.collideWithGhosts = null;
 
-      // Enemy/player collision listener objects
-      this.collideWithBees = null;
-      this.collideWithGroundEnemies = null;
-      this.collideWithHangingPlantEnemies = null;
-      this.collideWithHangingSpiderEnemies = null;
-      this.collideWithSpikes = null;
-      this.collideWithGhosts = null;
+    this.cameraLvl = 1; // 0 (underground area), 1, 2, 3, 4, 5 (top-most boss level corridor)
 
-      this.cameraLvl = 1; // 0 (underground area), 1, 2, 3, 4, 5 (top-most boss level corridor)
+    this.levelThemeAudio = null;
+    this.gameOverAudio = null;
+    this.gameWinAudio = null;
+    this.bossBattleAudio = null;
+    this.pogoAudio = null;
+    this.hitFailAudio = null;
 
-      this.levelThemeAudio = null;
-      this.gameOverAudio = null;
-      this.gameWinAudio = null;
-      this.bossBattleAudio = null;
-      this.pogoAudio = null;
-      this.hitFailAudio = null;
-
-      this.HealthBarScene = null;
+    this.HealthBarScene = null;
   }
 
   preload () {}
@@ -204,10 +204,13 @@ export default class SceneAmazon extends Phaser.Scene {
 
     // apes
     for (let apeSpawn of this.apeSpawnPoints) {
-      for (let i = 1; i < 3; i++) {
-        let ape = new Enemy(this, apeSpawn, apeSpawn.x, apeSpawn.y, 'ape', 'APE', i * 4000);
-        this.enemies.add(ape, true);
+      let doNotReAppearAfterDeath = false;
+      if (typeof apeSpawn.data !== 'undefined' && apeSpawn.data !== null && apeSpawn.data.list[0] && apeSpawn.data.list[0].name === 'DO_NOT_REAPPEAR_AFTER_DEATH') {
+        doNotReAppearAfterDeath = apeSpawn.data.list[0].value;
       }
+
+      let ape = new Enemy(this, apeSpawn, apeSpawn.x, apeSpawn.y, 'ape', 'APE', 4000, doNotReAppearAfterDeath);
+      this.enemies.add(ape, true);
     }
 
     // snakes
@@ -372,7 +375,7 @@ export default class SceneAmazon extends Phaser.Scene {
     // overlaps
     this.deathOverlaps = this.physics.add.overlap(this.player, this.deathSpots, this.playerKill);
     this.collideWithSpikes = this.physics.add.overlap(this.player, this.spikeAreas, this.hurtPlayer);
-    this.lianOverlaps = this.physics.add.overlap(this.player, this.lians, this.overlapLian, null, this);
+    this.lianaOverlaps = this.physics.add.overlap(this.player, this.lians, this.overlapLian, null, this);
     this.collideWithGroundEnemies = this.physics.add.overlap(this.player, this.enemies, this.killEnemy);
     this.collideWithBees = this.physics.add.overlap(this.player, this.beeEnemies, this.killEnemy);
     this.collideWithGhosts = this.physics.add.overlap(this.player, this.ghostEnemies, this.killEnemy);

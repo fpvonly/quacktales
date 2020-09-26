@@ -8,9 +8,9 @@ import EnemyBoss from './EnemyBoss.js';
 
 export default class Enemy {
 
-  constructor (scene, spawn, x, y, spriteKey, type, delay = 1000) {
+  constructor (scene, spawn, x, y, spriteKey, type, delay = 1000, doNotReAppearAfterDeath = false) {
     if (type === 'APE') {
-      return new EnemyApe(scene, spawn, x, y, spriteKey, delay);
+      return new EnemyApe(scene, spawn, x, y, spriteKey, delay, doNotReAppearAfterDeath);
     } else if (type === 'SNAKE') {
       return new EnemySnake(scene, spawn, x, y, spriteKey);
     } else if (type === 'BEE') {

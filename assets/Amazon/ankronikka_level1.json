@@ -1,4 +1,13 @@
-{ "height":106,
+{ "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"ankronikka_level1.json"
+        }
+    },
+ "height":106,
  "infinite":false,
  "layers":[
         {
@@ -800,6 +809,12 @@
                  "height":16,
                  "id":103,
                  "name":"ape_spawn",
+                 "properties":[
+                        {
+                         "name":"DO_NOT_REAPPEAR_AFTER_DEATH",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":false,
@@ -1657,7 +1672,7 @@
  "nextobjectid":176,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"1.2.4",
+ "tiledversion":"1.4.2",
  "tileheight":16,
  "tilesets":[
         {
@@ -1676,6 +1691,6 @@
         }],
  "tilewidth":16,
  "type":"map",
- "version":1.2,
+ "version":1.4,
  "width":154
 }

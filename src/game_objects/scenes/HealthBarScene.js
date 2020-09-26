@@ -2,7 +2,6 @@ import '../../phaser/phaser.min.js';
 
 export default class HealthBarScene extends Phaser.Scene {
 
-
   constructor (key) {
     super({
       key: 'HealthBarScene',
@@ -22,7 +21,6 @@ export default class HealthBarScene extends Phaser.Scene {
 
   create() {
     this.lives = 3;
-  //  this.physics.world.setBounds(0, 0, 100, 50);
     this.cameras.main.setBackgroundColor('#000000');
     this.cameras.main.setViewport(0, 0, 240, 35);
 

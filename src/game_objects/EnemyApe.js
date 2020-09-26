@@ -2,7 +2,7 @@ import GameSprite from './GameSprite.js';
 
 export default class EnemyApe extends GameSprite {
 
-  constructor (scene, spawn, x, y, spriteKey, delay) {
+  constructor (scene, spawn, x, y, spriteKey, delay, doNotReAppearAfterDeath) {
     super(scene, x, y, spriteKey);
 
     this.oldX = -1;
@@ -19,6 +19,7 @@ export default class EnemyApe extends GameSprite {
     this.spriteKey = spriteKey;
     this.spawn = spawn;
     this.timeout = null;
+    this.doNotReAppearAfterDeath = doNotReAppearAfterDeath;
 
     this.initEnemy();
   }
@@ -111,18 +112,20 @@ export default class EnemyApe extends GameSprite {
   }
 
   reset = () => {
-    this.timeout = setTimeout(() => {
-      if (this) {
-        this.setX(this.spawn.x);
-        this.setY(this.spawn.y);
-        this.oldX = -1;
-        this.jumpCounter = 0;
-        this.getSpeedDirection();
-        this.isStandingOnSomething(false);
-        this.playAnim('apeWalk', true);
-        this.setActive(true).setVisible(true);
-      }
-    }, 1000);
+    if (this.doNotReAppearAfterDeath === false) {
+      this.timeout = setTimeout(() => {
+        if (this) {
+          this.setX(this.spawn.x);
+          this.setY(this.spawn.y);
+          this.oldX = -1;
+          this.jumpCounter = 0;
+          this.getSpeedDirection();
+          this.isStandingOnSomething(false);
+          this.playAnim('apeWalk', true);
+          this.setActive(true).setVisible(true);
+        }
+      }, 1000);
+    }
   }
 
   isStandingOnSomething = (is = -1) => {
