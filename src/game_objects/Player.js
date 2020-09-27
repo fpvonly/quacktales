@@ -211,8 +211,8 @@ export default class Player extends GameSprite {
     this.scene.input.keyboard.on('keydown_SPACE', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      if (this.hit() === false) {
-        this.pogo(true);
+      if (this.hitMode() === false) {
+        this.pogoMode(true);
       } else {
         this.playHit = true;
       }
@@ -221,31 +221,31 @@ export default class Player extends GameSprite {
     this.scene.input.keyboard.on('keyup_SPACE', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      this.pogo(false);
+      this.pogoMode(false);
       this.setVelocityY(0); // must be here to kill the upward motion after releasing the space-key in-air
     });
 
   }
 
   control = () => {
-    if ((this.playerClimbing === false || this.cancelClimb === true || this.pogo() === true) && this.stuck === false) {
+    if ((this.playerClimbing === false || this.cancelClimb === true || this.pogoMode() === true) && this.stuck === false) {
 
       this.body.gravity.y = this.gravityY; // reset gravity
       this.body.allowGravity = true; // reset gravity
 
       if (this.cursors.left.isDown) {
-        if (this.playerDirection === 'left' && (Math.floor(this.body.x) === this.oldX || this.body.onWall()) && this.jump() === false && this.pogo() === false) {
+        if (this.playerDirection === 'left' && (Math.floor(this.body.x) === this.oldX || this.body.onWall()) && this.jumpMode() === false && this.pogoMode() === false) {
 
-          if (this.hit() === false && this.playHit === false && this.playHitFail === false) {  // HIT PHASE 0
-            this.hit(true);
-          } else if (this.hit() === true && this.playHit === false) { // HIT PHASE 1
+          if (this.hitMode() === false && this.playHit === false && this.playHitFail === false) {  // HIT PHASE 0
+            this.hitMode(true);
+          } else if (this.hitMode() === true && this.playHit === false) { // HIT PHASE 1
             this.playAnim('hitLeft1');
           } else if (this.playHit === true) {   // HIT PHASE 2
             this.playAnim('hitLeftFull', true);
             this.once('animationcomplete', () => {
               this.hitCallback();
               this.playHit = false;
-              this.hit(false);
+              this.hitMode(false);
               let hitObjectClassName = this.getHitObject();
               this.playHitFail = true;
               if (hitObjectClassName === 'Pompeli' || hitObjectClassName === 'RoundRock' || hitObjectClassName === 'TreasureChest') {
@@ -276,7 +276,7 @@ export default class Player extends GameSprite {
           this.playerDirection = 'left';
           this.setVelocityX(-80);
           this.playHitFail = false;
-          this.hit(false);
+          this.hitMode(false);
           this.oldX = Math.floor(this.body.x);
           this.hitObjectClassNamePrevious = '';
         }
@@ -284,18 +284,18 @@ export default class Player extends GameSprite {
         this.resetHitBox();
 
       } else if (this.cursors.right.isDown) {
-        if (this.playerDirection === 'right' && (Math.floor(this.body.x) === this.oldX || this.body.onWall()) && this.jump() === false && this.pogo() === false) {
+        if (this.playerDirection === 'right' && (Math.floor(this.body.x) === this.oldX || this.body.onWall()) && this.jumpMode() === false && this.pogoMode() === false) {
 
-          if (this.hit() === false && this.playHit === false && this.playHitFail === false) {  // HIT PHASE 0
-            this.hit(true);
-          } else if (this.hit() === true && this.playHit === false) { // HIT PHASE 1
+          if (this.hitMode() === false && this.playHit === false && this.playHitFail === false) {  // HIT PHASE 0
+            this.hitMode(true);
+          } else if (this.hitMode() === true && this.playHit === false) { // HIT PHASE 1
             this.playAnim('hitRight1');
           } else if (this.playHit === true) {   // HIT PHASE 2
             this.playAnim('hitRightFull', true);
             this.once('animationcomplete', () => {
               this.hitCallback();
               this.playHit = false;
-              this.hit(false);
+              this.hitMode(false);
               let hitObjectClassName = this.getHitObject();
               this.playHitFail = true;
               if (hitObjectClassName === 'Pompeli' || hitObjectClassName === 'RoundRock' || hitObjectClassName === 'TreasureChest') {
@@ -324,7 +324,7 @@ export default class Player extends GameSprite {
           this.playAnim('right', true);
           this.playerDirection = 'right';
           this.setVelocityX(80);
-          this.hit(false);
+          this.hitMode(false);
           this.playHitFail = false;
           this.oldX = Math.floor(this.body.x);
           this.hitObjectClassNamePrevious = '';
@@ -340,7 +340,7 @@ export default class Player extends GameSprite {
       } else {
         this.setVelocityX(0);
         this.playAnim((this.playerDirection === 'right' ? 'turnRight' : 'turnLeft'));
-        this.hit(false);
+        this.hitMode(false);
         this.oldX = -1;
         this.resetHitBox();
       }
@@ -359,27 +359,16 @@ export default class Player extends GameSprite {
       this.playAnim((this.playerDirection === 'right' ? 'rightClimb' : 'leftClimb'), true);
 
       if (this.playerClimbing === true && this.jumpKeyDownAndUp === true && (this.cursors.left.isDown || this.cursors.right.isDown) && this.cursors.up.isDown) {
-        this.climb(false);
+        this.climbMode(false);
         this.setVelocityY(-180);
-        this.jump(true);
+        this.jumpMode(true);
       } else {
         this.controlClimb();
       }
     }
 
-    if (this.hit() === false) {
+    if (this.hitMode() === false) {
       this.registerHitCallback(() => {}, () => { return null; });
-    }
-  }
-
-  resetHitBox = () => { // prevent falling through wall after pogoing and hitting a wall
-    if (this.pogo() === false && (this.pogoDirectionWhenHittingWall === 'left' || this.pogoDirectionWhenHittingWall === 'right')  && Math.abs(this.body.x - this.pogoXWhenHittingWall) >= 15) {
-      this.setSize(24, 25);
-      this.setOffset(1, 7);
-      this.pogoDirectionWhenHittingWall = '';
-    } else if (this.pogoDirectionWhenHittingWall === '' || Math.abs(this.pogoXWhenHittingWall - this.body.x) > 25) {
-      this.setSize(24, 25);
-      this.setOffset(1, 7);
     }
   }
 
@@ -415,7 +404,7 @@ export default class Player extends GameSprite {
 
     // This is for stopping the climb after reaching the bottom end of the lian
     if (this.playerClimbing === true && this.scene.physics.overlap(this, this.overlappingLian[0]) === false) {
-      this.climb(false);
+      this.climbMode(false);
     }
   }
 
@@ -440,13 +429,13 @@ export default class Player extends GameSprite {
 
     // BASIC JUMP -->
     if (this.cursors.up.isDown) {
-      if (this.jump() === false && this.body.onFloor()) {
-        this.jump(true);
+      if (this.jumpMode() === false && this.body.onFloor()) {
+        this.jumpMode(true);
         this.setVelocityY(-180);
         this.jumpKeyDownAndUp = false;
         this.playTouchDownSoundOnce = true;
       } else if (this.isStandingOnSomething() === true) {
-        this.jump(true);
+        this.jumpMode(true);
         this.setVelocityY(-180);
         this.isStandingOnSomething(false);
         this.jumpKeyDownAndUp = false;
@@ -456,18 +445,18 @@ export default class Player extends GameSprite {
     // BASIC JUMP <--
 
     // If player jumps to a lian, activate climbing mode
-    if (this.jump() === true && this.scene.physics.overlap(this, this.overlappingLian[0]) && this.cancelClimb === false) {
-      this.climb(true);
+    if (this.jumpMode() === true && this.scene.physics.overlap(this, this.overlappingLian[0]) && this.cancelClimb === false) {
+      this.climbMode(true);
     }
 
-    if (this.pogo() === true) { // Pogo situations
+    if (this.pogoMode() === true) { // Pogo situations
       this.playTouchDownSoundOnce = true;
       if (this.body.onFloor()) {
         this.pogoAudio.play({loop: false});
         this.setVelocityY(-250);
         this.playAnim((this.playerDirection === 'right' ? 'pogoRight_1' : 'pogoLeft_1'));
       } else {
-        this.climb(false);
+        this.climbMode(false);
         this.playAnim((this.playerDirection === 'right' ? 'pogoRight_2' : 'pogoLeft_2'));
       }
       this.setSize(4, 25);
@@ -477,11 +466,11 @@ export default class Player extends GameSprite {
         this.pogoXWhenHittingWall = this.body.x;
       }
     } else { // Normal jumping and freefall situations
-      if (this.jump() === true) {
+      if (this.jumpMode() === true) {
         if (this.body.onFloor()) {
           this.cancelClimb = false;
           if (this.cursors.up.isUp) { // prevent continuous jumping
-            this.jump(false);
+            this.jumpMode(false);
           }
 
           // If the up key is pressed and player is falling down and hits the floor
@@ -491,7 +480,7 @@ export default class Player extends GameSprite {
           }
         } else if (this.playerClimbing === true) {
           this.setVelocityX(0);
-          this.jump(false);
+          this.jumpMode(false);
         } else {
           if (this.scene.physics.overlap(this, this.overlappingLian[0]) === false) {
              this.cancelClimb = false;
@@ -500,14 +489,14 @@ export default class Player extends GameSprite {
         }
 
         if (!this.body.onFloor() && this.isStandingOnSomething() === true) { // if standing on an object
-          this.jump(false);
+          this.jumpMode(false);
         }
 
       } else if (!this.body.onFloor()) { //  freefall (e.g after pogo)
         if (this.scene.physics.overlap(this, this.overlappingLian[0]) && this.cancelClimb === false) {
-          this.climb(true);
+          this.climbMode(true);
         } else if (this.isStandingOnSomething() === true) { // if standing on an object
-          this.jump(false);
+          this.jumpMode(false);
         } else {
           this.cancelClimb = false;
           this.playAnim((this.playerDirection === 'right' ? 'jumpRight' : 'jumpLeft'));
@@ -524,7 +513,7 @@ export default class Player extends GameSprite {
 
   }
 
-  jump = (state = null) => {
+  jumpMode = (state = null) => {
     if (state === null) {
       return this.jumpState;
     } else {
@@ -535,8 +524,8 @@ export default class Player extends GameSprite {
     }
   }
 
-  pogo = (state = null) => {
-    if (this.hit() === true) {
+  pogoMode = (state = null) => {
+    if (this.hitMode() === true) {
       this.pogoState = false;
       return false;
     }
@@ -550,14 +539,14 @@ export default class Player extends GameSprite {
     }
   }
 
-  climb = (state = false) => {
+  climbMode = (state = false) => {
     this.playerClimbing = state;
     if (state === true) {
       this.body.gravity.y = 0;
       this.body.allowGravity = false;
       this.body.velocity.x = 0;
-      this.pogo(false);
-      this.jump(false);
+      this.pogoMode(false);
+      this.jumpMode(false);
       this.cancelClimb = false;
       if (this.x != this.overlappingLian[0].x) {
         this.scene.tweens.add({targets: this, x: this.overlappingLian[0].x, duration: 40});
@@ -570,7 +559,7 @@ export default class Player extends GameSprite {
     }
   }
 
-  hit = (state = null) => {
+  hitMode = (state = null) => {
     if (state === null) {
       return this.hitState;
     } else {
@@ -578,14 +567,14 @@ export default class Player extends GameSprite {
     }
   }
 
-  hurt = (resetEnemyColliders, stuck = false, enemy = null, enemyYisFlipped, bounceWhenHurt = true) => {
+  hurtMode = (resetEnemyColliders, stuck = false, enemy = null, enemyYisFlipped, bounceWhenHurt = true) => {
     if (this.hurtState === false) {
       this.stuck = stuck;
       this.hurtState = true;
       this.setVelocityY(0);
-      this.pogo(false);
-      this.jump(false);
-      this.climb(false);
+      this.pogoMode(false);
+      this.jumpMode(false);
+      this.climbMode(false);
 
       if (this.stuck === true) {
         this.body.gravity.y = 0;
@@ -622,6 +611,22 @@ export default class Player extends GameSprite {
       this.hurtResetCallback = resetEnemyColliders;
       this.lives = (this.lives > 0) ? this.lives-1 : this.lives;
       this.scene.events.emit('decreaseLives', this.lives);
+    }
+  }
+
+  resetHitBox = () => { // prevent falling through wall after pogoing and hitting a wall
+    let bodyWidth = this.body.width;
+    this.setSize((bodyWidth < 24 ? bodyWidth + 1 : 24), 25, true); // true means center physics body
+    this.setOffset(this.body.offset.x, 7);
+  }
+
+  handleWallOverlapAfterPogoing = () => {
+    if (this.pogoMode() === false && this.pogoDirectionWhenHittingWall === 'left') {
+      this.body.x += 13; // scrooge sprite width is 26px
+      this.pogoDirectionWhenHittingWall = '';
+    } else if (this.pogoMode() === false && this.pogoDirectionWhenHittingWall === 'right') {
+      this.body.x -= 13;
+      this.pogoDirectionWhenHittingWall = '';
     }
   }
 

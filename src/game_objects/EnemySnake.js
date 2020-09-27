@@ -42,7 +42,7 @@ export default class EnemySnake extends GameSprite {
     this.scene.anims.create({
       key: 'snakeUp',
       frames: this.scene.anims.generateFrameNumbers(this.spriteKey, {start: 3, end: 4}),
-      frameRate: 6,
+      frameRate: 2,
       repeat: -1
     });
 

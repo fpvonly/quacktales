@@ -70,6 +70,9 @@ export default class SceneAmazon extends Phaser.Scene {
     this.collideWithHangingSpiderEnemies = null;
     this.collideWithSpikes = null;
     this.collideWithGhosts = null;
+    this.wallOverlap = null;
+    this.lianaOverlaps = null;
+    this.collideWithBoss = null;
 
     this.cameraLvl = 1; // 0 (underground area), 1, 2, 3, 4, 5 (top-most boss level corridor)
 
@@ -373,6 +376,7 @@ export default class SceneAmazon extends Phaser.Scene {
 
 
     // overlaps
+    this.wallOverlap = this.physics.add.overlap(this.player, this.platforms, this.player.handleWallOverlapAfterPogoing);
     this.deathOverlaps = this.physics.add.overlap(this.player, this.deathSpots, this.playerKill);
     this.collideWithSpikes = this.physics.add.overlap(this.player, this.spikeAreas, this.hurtPlayer);
     this.lianaOverlaps = this.physics.add.overlap(this.player, this.lians, this.overlapLian, null, this);
@@ -565,14 +569,14 @@ export default class SceneAmazon extends Phaser.Scene {
     if (enemy.name === 'plant') {
       stuck = true;
     }
-    if (hurtWhilePogoing === true || (player.pogo() === false || (player.pogo() === true && player.body.y - player.body.halfHeight > enemy.body.y - enemy.body.halfHeight))) {
+    if (hurtWhilePogoing === true || (player.pogoMode() === false || (player.pogoMode() === true && player.body.y - player.body.halfHeight > enemy.body.y - enemy.body.halfHeight))) {
       this.collideWithBees.active = false;
       this.collideWithGroundEnemies.active = false;
       this.collideWithHangingPlantEnemies.active = false;
       this.collideWithHangingSpiderEnemies.active = false;
       this.collideWithSpikes.active = false;
       this.collideWithGhosts.active = false;
-      this.player.hurt(this.resetEnemyColliders, stuck, enemy, (enemy.yIsFlipped && enemy.yIsFlipped === true ? true : false));
+      this.player.hurtMode(this.resetEnemyColliders, stuck, enemy, (enemy.yIsFlipped && enemy.yIsFlipped === true ? true : false));
 
       if (this.FINAL_BOSS_FIGHT === true && this.player.lives === 0) {
         this.gameOverAndReset(false);
@@ -589,7 +593,7 @@ export default class SceneAmazon extends Phaser.Scene {
       if (enemy.constructor.name === 'EnemyPlant' && enemy.yIsFlipped === false) {
         hurtPlayer = true;
       }
-      if (player.pogo() === true && player.body.y + player.body.halfHeight < enemy.body.y && hurtPlayer === false) {
+      if (player.pogoMode() === true && player.body.y + player.body.halfHeight < enemy.body.y && hurtPlayer === false) {
         this.killAudio.play({loop: false});
         this.player.setVelocityY(-210);
         enemy.die();
@@ -626,7 +630,7 @@ export default class SceneAmazon extends Phaser.Scene {
   }
 
   interactWithBridge = (stone, player) => {
-    if (player.pogo() === true) {
+    if (player.pogoMode() === true) {
       this.pogoAudio.play({loop: false});
       player.setVelocityY(-250);
     } else if (player.body.onFloor() === false) {
@@ -655,7 +659,7 @@ export default class SceneAmazon extends Phaser.Scene {
   }
 
   enableHitRock  = (player, rock) => {
-    if (player.pogo() === true) {
+    if (player.pogoMode() === true) {
       this.pogoAudio.play({loop: false});
       player.setVelocityY(-250);
     } else if (player.body.onFloor() === false) {
@@ -673,7 +677,7 @@ export default class SceneAmazon extends Phaser.Scene {
   }
 
   enableHitTreasure  = (player, treasure) => {
-    if (player.pogo() === true) {
+    if (player.pogoMode() === true) {
       this.pogoAudio.play({loop: false});
       player.setVelocityY(-250);
       if (typeof treasure.pogoHitCount === 'undefined' || (treasure.pogoHitCount && treasure.pogoHitCount > 0)) {
@@ -701,7 +705,7 @@ export default class SceneAmazon extends Phaser.Scene {
   }
 
   enableHitPompeli  = (player, pompeli) => {
-    if (player.pogo() === true) {
+    if (player.pogoMode() === true) {
       this.pogoAudio.play({loop: false});
       player.setVelocityY(-250);
     } else if (player.body.onFloor() === false) {
