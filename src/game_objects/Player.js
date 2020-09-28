@@ -253,7 +253,6 @@ export default class Player extends GameSprite {
                 if(hitObjectClassName === 'RoundRock') {
                   this.hitObjectClassNamePrevious = 'RoundRock'; // needed for not giving a hit fail animation after the rock has vanished and the re-hit hits the air
                 }
-              } else {
                 if (this.hitOkAudio.isPlaying === false) {
                   this.hitOkAudio.play({loop: false});
                 }
@@ -303,7 +302,6 @@ export default class Player extends GameSprite {
                 if(hitObjectClassName === 'RoundRock') {
                   this.hitObjectClassNamePrevious = 'RoundRock';
                 }
-              } else {
                 if (this.hitOkAudio.isPlaying === false) {
                   this.hitOkAudio.play({loop: false});
                 }
