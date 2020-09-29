@@ -18,8 +18,6 @@ export default class Player extends GameSprite {
     this.getHitObject = () => { return null; };
     this.hitObjectClassNamePrevious = '';
     this.playerDirection = 'right'; //  left, right
-    this.pogoDirectionWhenHittingWall = '';
-    this.pogoXWhenHittingWall = 0;
     this.overlappingLian = [];
     this.playerClimbing = false;
     this.cancelClimb = false;
@@ -459,10 +457,6 @@ export default class Player extends GameSprite {
       }
       this.setSize(4, 25);
       this.setOffset(10, 7);
-      if (this.body.onWall()) {
-        this.pogoDirectionWhenHittingWall = this.playerDirection;
-        this.pogoXWhenHittingWall = this.body.x;
-      }
     } else { // Normal jumping and freefall situations
       if (this.jumpMode() === true) {
         if (this.body.onFloor()) {
@@ -612,20 +606,11 @@ export default class Player extends GameSprite {
     }
   }
 
-  resetHitBox = () => { // prevent falling through wall after pogoing and hitting a wall
+  resetHitBox = () => {
     let bodyWidth = this.body.width;
+    // prevent falling through a wall/obstacle after pogoing by gradually increasing the hitbox size
     this.setSize((bodyWidth < 24 ? bodyWidth + 1 : 24), 25, true); // true means center physics body
     this.setOffset(this.body.offset.x, 7);
-  }
-
-  handleWallOverlapAfterPogoing = () => {
-    if (this.pogoMode() === false && this.pogoDirectionWhenHittingWall === 'left') {
-      this.body.x += 13; // scrooge sprite width is 26px
-      this.pogoDirectionWhenHittingWall = '';
-    } else if (this.pogoMode() === false && this.pogoDirectionWhenHittingWall === 'right') {
-      this.body.x -= 13;
-      this.pogoDirectionWhenHittingWall = '';
-    }
   }
 
   healPlayer = () => {

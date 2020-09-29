@@ -70,7 +70,6 @@ export default class SceneAmazon extends Phaser.Scene {
     this.collideWithHangingSpiderEnemies = null;
     this.collideWithSpikes = null;
     this.collideWithGhosts = null;
-    this.wallOverlap = null;
     this.lianaOverlaps = null;
     this.collideWithBoss = null;
 
@@ -376,7 +375,6 @@ export default class SceneAmazon extends Phaser.Scene {
 
 
     // overlaps
-    this.wallOverlap = this.physics.add.overlap(this.player, this.platforms, this.player.handleWallOverlapAfterPogoing);
     this.deathOverlaps = this.physics.add.overlap(this.player, this.deathSpots, this.playerKill);
     this.collideWithSpikes = this.physics.add.overlap(this.player, this.spikeAreas, this.hurtPlayer);
     this.lianaOverlaps = this.physics.add.overlap(this.player, this.lians, this.overlapLian, null, this);
