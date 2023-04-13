@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var nocache = require('node-nocache');
+var nocache = require('nocache');
 
 var app = express();
 var server = app.listen(33, function() {
