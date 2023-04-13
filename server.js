@@ -3,11 +3,11 @@ var path = require('path');
 var nocache = require('node-nocache');
 
 var app = express();
-var server = app.listen(39, function() {
+var server = app.listen(33, function() {
   console.log("QuackTales server started");
 });
 
-app.use(nocache); // prevent client caching for images, sounds etc
+app.use(nocache()); // prevent client caching for images, sounds etc
 app.use('/', express.static(path.resolve('')));
 app.use('/assets', express.static(path.resolve('assets')));
 app.use('/phaser', express.static(path.resolve('phaser')));
